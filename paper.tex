@@ -1,0 +1,217 @@
+% Net.In.Tum (Pro)Seminar Paper Template
+% Based on http://www.acm.org/sigs/publications/proceedings-templates
+% (Option #1)
+% 2015-11-04
+
+% +++++++++++++++++++++++++++++++++++++++++++
+
+% ENGLISH-Version
+\documentclass{acm_proc_article-sp}
+
+% GERMAN-Version
+%\documentclass{acm_proc_article-sp-german}
+%\usepackage[ngerman]{babel}
+% Be sure to toggle other language relevant settings accordingly below...
+
+% +++++++++++++++++++++++++++++++++++++++++++
+% Include packages for additional functionality
+
+\usepackage{makeidx}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage[utf8]{inputenc}
+
+%+++++++++++++++++++++++++++++++++++++++++++
+
+\begin{document}
+
+\title{Consensus Algorithms for Blockchains}
+
+\numberofauthors{1}
+\author{Marcel Mussner\\
+       \affaddr{Advisor: Sree Harsha Totakura}\\
+       %\affaddr{Betreuer: Name Vorname}\\
+       \affaddr{(Pro)Seminar Network Hacking, Defense and Tamperproof Systems WS2017/18}\\
+       \affaddr{Chair for Network Architectures and Services}\\
+       \affaddr{Department of Computer Science, Technische Universität München}\\
+       % \affaddr{Lehrstuhl für Netzarchitekturen und Netzdienste}\\
+       % \affaddr{Fakultät für Informatik, Technische Universität München}\\
+       \email{Email: marcel.mussner@tum.de}
+}
+
+\maketitle
+
+%+++++++++++++++++++++++++++++++++++++++++++
+
+\begin{abstract}
+
+
+\end{abstract}
+
+%+++++++++++++++++++++++++++++++++++++++++++
+
+%\keywords{Foo, Bar, Baz}
+
+%+++++++++++++++++++++++++++++++++++++++++++
+
+\section{Introduction}
+
+
+%+++++++++++++++++++++++++++++++++++++++++++
+% Begin of paper's body
+
+\section{Blockchains}
+\label{Sec:Something}
+
+Explanation about what a blockchain is and what defines a blockchain. Some historic background (Satoshi's paper about bitcoin). Earlier mentions of similar systems.
+
+
+\subsection[Technical description of blockchains]
+
+More detailed explanation about how blockchains should work. Short overview about what parts of blockchains are implementation dependent. What differentiates different blockchains.
+
+
+\subsection{Advantages and use cases of blockchains}
+
+Explanation why blockchains solve some of the problems of other systems and what types of applications this could be useful for.
+
+
+\subsection{Problems with blockchains}
+
+Description of some problems and disadvantages of blockchains in general, without looking at specific implementations yet.
+
+
+\subsection{Existing implementations}
+
+Some examples of systems where blockchains are already used.
+
+
+\section{Consensus algorithms}
+
+Description what a defines a consensus algorithm and why it's a crucial part of how blockchains operate.
+
+
+\subsection{Requirements for consensus algorithms}
+
+Description what a consensus algorithm should have, also in reference to Byzantine Fault Tolerance.
+
+
+\subsubsection{Byzantine Fault Tolerance}
+
+Description of what BFT means, what the Byzantine General's problem is and why it is so important in distributed systems.
+
+
+\subsection{Practical Byzantine Fault Tolerance}
+
+Descritption of the PBFT algorithm from Miguel Castro and Barbara Liskov.
+
+(I wasn't able to read up enough about PBFT yet, so I am not sure about potential additional subsections here).
+
+
+\subsection{Proof-of-work}
+
+Explanation of proof-of-work as a consensus algorithm. Also explanation why it could be used.
+
+
+\subsubsection{Hashcash}
+
+First usage of POW in Hashcash. Explanation how it works. (Not sure if I should talk a lot about uses of POW other than in blockchains?)
+
+
+\subsubsection{POW in blockchains}
+
+Description about how POW can be used in blockchains and how it is already beeing used (cryptocurrency)
+
+
+\subsubsection{Variants of POW}
+
+Challenge-response vs Solution-verification.
+
+
+\subsubsection{Problems with POW}
+
+Description of problems which arise by using POW in general and especially in congestion with blockchains and some suggested solutions.
+
+
+\subsection{Proof-of-stake}
+
+Explanation what Proof of stake means and how it works.
+
+
+\subsubsection{Advantages over POW}
+
+Explanation about the problems POS tries to solve, that POW has.
+
+
+\subsubsection{Problems with POS}
+
+Explanation of some of the problems with POS and some solution attempts.
+
+
+\subsubsection{Existing implementations and use cases of POS}
+
+Some use cases where POS is already beeing used.
+
+
+\subsection{Proof of activity}
+
+Description about POA as a hybrid of POW and POS.
+
+
+\subsubsection{Problems solved by POA}
+
+Advantages of POA compared to POW and POS.
+
+
+\subsubsection{Existing implementations and use cases of POA}
+
+
+\subsection{Proof-of-capacity or Proof-of-space}
+
+Description of what POC and how it works.
+
+
+\subsubsection{Comparison to POW and POS}
+
+Comparison of POC to POW and POS and advantages/disadvantages
+
+
+\subsubsection{Existing implementations and use cases of POC}
+
+
+\subsection{Proof of burn}
+
+
+\subsubsection{Use cases for POB}
+
+
+\subsection{Proof of elapsed time}
+
+
+\subsubsection{Intel's implementation of proof of elapsed time}
+
+
+\subsubsection{Problems with Proof of elapsed time}
+
+
+\section{Conclusions}
+
+
+%+++++++++++++++++++++++++++++++++++++++++++
+% edit literature.bib
+\bibliographystyle{abbrv}
+\bibliography{literature}
+
+%+++++++++++++++++++++++++++++++++++++++++++
+% APPENDICES are optional
+% Enable when needed!
+% \appendix
+
+% Appendix #1
+%\section{Some Appendix Which is Entirely Optional}
+
+\end{document}
