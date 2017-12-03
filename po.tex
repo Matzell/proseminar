@@ -1,0 +1,27 @@
+\section{Proof-of-Work}
+
+The idea behind Proof-of type systems is that whoever should be able to add the next block in the blockchain is chosen by proving the ownership of some kind of resource. This resource could be
+something determined by computer hardware, like computing power in Proof-of-Work systems or hard drive capacity in Proof-of-Space systems, or it could be determined by some kind of stake ownership
+in the system like in Proof-of-Stake systems. Below we will describe some of these systems and compare them to each other.
+
+\subsection{Proof-of-Work}
+
+The first widely used consensus algorithm in blockchains is a so called Proof-of-Work (POW) algorithm. It was and is still being used as the consensus algorithm in the implementation of Bitcoin.\cite{url:bitcoin}
+The idea behind a POW algorithm is that the creator of the next block is chosen by him providing a significant amount of computing power. Usually this computing power is provided by solving some
+kind of puzzle. 
+
+\subsubsection{Requirements for POW systems}
+
+The puzzle chosen for a POW system can and should have some properties. Firstly it should be computationally hard enough to ensure that a significant amount of computational power should have 
+to be expended to be able to solve it otherwise the purpose would be lost. On the other hand however it should also be computationally easy for others in the system to check the correctness 
+of a proposed solution. Additionally it should also be possible to adjust the difficulty of the puzzle. This is very important to make the system future proof and to account for the predicted
+exponential increase in computing power over the years.\cite{url:moore_law} Additionally in the context of blockchains the difficulty of the puzzle should also account for a potential
+increase in computing power within the network caused by the addition of more peers.\par
+Lastly there is also the consideration of usefulness of the puzzle. In most existing implementations
+of POW systems the puzzle which should be solved does not provide a higher purpose. In other words the solution of the puzzle has no value other then finding the creator of the next block
+and the expended computing power is could be considered to be wasted.\cite{url:pow_useless} There have been some propositions and implementations for "useful" POW type systems. One example is
+the algorithm used in the cryptocurrency Primecoin. Primecoin uses a POW type system where a byproduct of the solution for the puzzle is the discovery of potentially new prime numbers.\cite{url:primecoin}
+
+\subsubsection{Examples for existing POW systems}
+
+
