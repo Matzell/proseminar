@@ -82,12 +82,12 @@ in the chain. To ensure that a single peer is able to create multiple blocks in 
 a peer has to have owned his current coins for at least 1440 block before he is considered to ensure that a peer does not simply move his stake between wallets and is therefore able to create
 multiple blocks in a row. To solve the problem of consensus loss each block is assigned a difficulty which is derived from the difficulty of the previous block. Similarly to POW systems this
 difficulty is then used in a algorithm which uses hash functions to find a certain hash value. As with POW systems then in the case of forks, the fork with the higher cumulative difficulty is
-the one which should be followed. This however does not constitute a POW system since finding a valid hash value does not allow a peer to add a block to the chain.\cite{url:nxt}
+the one which should be followed. This however does not constitute a POW system since finding a valid hash value does not allow a peer to add a block to the chain.\cite{url:nxt}\par
 Another type of POS system was proposed during the creation of the cryptocurrency Ethereum. The so called Slasher algorithm, which was never implemented in Ethereum, proposes an algorithm in
 which a peer that tries to follow two forks in the blockchain is being punished by the network. In short what happens is that if a peer tries to add a block to both forks of the chain, then
 other peers which notice this behaviour can publish their finding to the network. The result is then that the "cheating" peer loses its reward for adding the block and the peer who found the
 "cheater" gets 33\% of the reward.\cite{url:eth_slash} This algorithm was however discarded by the Ethereum developers, since not all consensus problems could be solved and the implementation of the punishing cheater
-algorithm by itself would be non-trivial.\cite{url:eth_no_slash} Ethereum instead now uses a POW type algorithm.\cite{url:eth_pow}
+algorithm by itself would be non-trivial.\cite{url:eth_no_slash} Ethereum instead now uses a POW type algorithm.\cite{url:eth_pow}\par
 Another cryptocurrency which uses POS as a part of its consensus algorithm is Peercoin. Similarly as with Nxt in Peercoin a stake is calculated for each peer. In comparison to Nxt however the age
 of a coin i.e. the time a coin is in possession of a peer is also relevant for calculating a peers stake. The older a coin is, the higher its value. In the case of consensus failure consensus is then
 regained by choosing the fork with the higher number of collective coin age.\cite{url:peercoin} One big criticism for Peercoin however is that it uses a periodical, centralized broadcast to checkpoint blocks in the chain.
@@ -96,4 +96,50 @@ Most other implementation which use POS algorithm make use of a hybrid between P
 
 \subsection{Proof-of-Activity} \label{poa}
 
-Since both POW and POS type systems show some major disadvantages to each other the idea of creating a hybrid between the two concepts emerged pretty soon. The idea is to use consensus 
+Since both POW and POS type systems show some major disadvantages to each other the idea of creating a hybrid between the two concepts emerged pretty soon. The idea is to use the properties of POW
+systems to resolve consensus failures, while not having to solely rely on computational power to reach consensus.
+//TODO: expand on this section
+
+\subsection{Proof-of-Capacity or Proof-of-Space}
+
+A different kind of proposed consensus algorithm is the so called Proof-of-Capacity (POC), sometimes also referred to as Proof-of-Space, algorithm. The idea of POC is similar to the one used in POW, but
+instead of using computational power as proof, disk space is used. This is done in order to reach consensus in a similar way to POW while being more ecologically friendly and at the same
+fairer to smaller peers, since disk space is less expensive compared to computational power and there is no danger for designated hardware to emerge for the sole purpose of mining.\par
+The basic concept of the POC algorithm is that a peer generates some large data set in a predetermined way and stores it on his disk. If some other peer then wants to verify that the disk space is used
+he can ask for some specific section of the generated data set, which the original peer can then provide. For this to work the generation of the data set has to be computationally expensive enough
+to ensure that the proving peer cannot generate the data set on the fly and provide the requested subset, but has to actually keep it stored.\cite{url:poc}
+
+\subsubsection{Existing POC systems}
+
+For the most part the usage of POC has only been theorised. The only somewhat large scale implementation of a blockchain with POC as its consensus algorithm is with the cryptocurrency Burstcoin.
+In its in 2014 released open implementation mining works in the following way: firstly every potential miner has to generate a large data set by taking his public address and a nonce and then
+applying a hash function to it multiple times. The resulting data set is then called a plot. This plot is then divided into 4096 so called scoops and stored on the disk. This process of generating
+a plot and storing it only has to be done once for every miner. After that mining works by firstly determining a scoop number which is derived from the previous block. The scoop with this scoop
+number is then the only scoop relevant for the next block and is therefore the only scoop that has to be read from the whole dataset which is computationally very easy. The scoop is then hashed
+with the generation signature of the next block. 8 bytes from the resulting hash are then taken and divided by a scaling factor, which can be adjusted and serves the same purpose as the difficulty
+in POW systems. The result is then a number of seconds. If this number of seconds have passed since the generation of the last block then the user whose scoop was used to generate it is eligible
+to add the new block to the chain. This way every user would be eligible if enough time passes.\cite{url:burstcoin}\par
+Other POC based cryptocurrencies like SpaceMint have also been proposed with similar algorithms but where never fully implemented. but where never fully implemented.\cite{url:spacemint}
+
+\subsection{Proof-of-Burn}
+
+Proof-of-Burn (POB) has been proposed as an alternative to POW systems. The way POB works is that to be able to start mining a peer has to "burn" some amount of coins first. Burning in this context
+means that the coins are being sent to a address from which they are unretrievable and therefore lost forever. The more coins a miner sends to such an address the higher his chance becomes
+to be the creator of the next block. The idea is that instead of spending money to buy mining hardware for POW systems, the money is instead directly burned skipping one step in between.
+For the purpose of burning coins, coins from other cryptocurrencies can also be used. One major criticism for this concept is however that all current implementations only allow for the
+burning of currencies which use the POW system. Which then nullifies the advantage POB would have over POW.\par
+The only at least somewhat active cryptocurrency currently using POB is Slimcoin\cite{url:pob}
+
+\subsection{Proof-of-Elapsed-Time}
+
+Proof-of-Elapsed-Time (POET) is another type of consensus algorithm proposed by Intel in 2015 as an alternative to POW. The idea is very similar to the one proposed by POW but instead of having
+to expend computing power to solve a puzzle which takes approximately a predetermined amount of time, this time is just spend waiting instead of consuming computing power and therefore
+electrical power. This provides some clear advantages. For once it is far more economical in comparison to POW. Secondly it provides a lot more fairness, since it does not require some
+specific hardware to be able to have a chance to be validated. According to Intel it is also extremely efficient to implement such an algorithm using CPU level instructions already present on
+newer generations of Intel CPUs. This however is also one of the major concerns of this proposed algorithm. By having to rely on Intel specific hardware, the whole system designed to be
+decentralized becomes very dependent on Intel as a manufacturer, which is in contradiction to the idea of a blockchain in the first place.\cite{url:coinbase_consensus}\par
+The basic idea of the functionality of the algorithm is as follows: the peers request a wait time from a so called enclave, which is just a function which is considered trustworthy by all peers
+which by Intels idea is present as a CPU instruction. The peer with the lowest wait time is then the one who is validated by the other peers in the network for whatever operation he wants to do,
+in the case of a blockchain this would be to create a new block. The other peers have to then be able to check, that the timer the validated peer used as a wait time is a valid timer he got from the
+trusted enclave. This can again be done by all peers through the enclave.\par
+There is currently no real application using this algorithm, but Intel released a open-source implementation of such an algorithm which can be used for testing.\cite{url:poet}
