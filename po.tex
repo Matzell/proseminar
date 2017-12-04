@@ -38,8 +38,62 @@ cryptographic hash function (SHA-256 in Bitcoin) with which they try to find a h
 however, in Bitcoin the block which should be added to the chain is hashed. Similar to the Hascash system the block contains a number which is increased until a valid hash is found.
 Additionally the new block also contains the hash of the previous block in the chain. This is necessary for once to ensure that the blocks are linked and create a chain but also to make sure that
 someone can not try to find a hash for the block after the next one or for a block 10 blocks from the current one. As with Hashcash the difficulty can be adjusted by adjusting the required number
-of leading zeros in the hash. In the Bitcoin network this difficulty adjusts itself in such a way that the average time elapsed between two blocks is approximately 10 minutes.\cite{url:bitcoin}\par
+of leading zeros in the hash. In the Bitcoin network this difficulty adjusts itself in such a way that the average time elapsed between two blocks is approximately 10 minutes.
+In the case of Bitcoin and other cryptocurrencies this whole system of trying to find a solution and then adding a block to the chain is called mining. To provide an incentive for
+people to mine there is a reward of some amount of Bitcoins for whoever finds the next solution and adds the next block to the chain.\cite{url:bitcoin}\par
 Another type of POW algorithm used in cryptocurrencies like Litecoin or Dogecoin is the so called scrypt algorithm.\cite{url:litecoin_dogecoin} The basic concept behind scrypt is that in the first 
 step a large number of pseudorandom bit strings are generated. The amount of these bit strings is such that it could very well be possible to run into memory limitations while trying to store 
 all the strings. In a second step, these strings are then accessed in pseudorandom order and used to generate a key. Since the execution of this algorithm is not only computationally hard but
 also has a significant memory requirement it could also be categorised as a Proof-of-Space type algorithm.\cite{url:scrypt}
+
+\subsubsection{Problems with POW systems}
+
+One of the already mentioned problems with using POW as a consensus algorithm is the already mentioned fact that with most implementations the computing power expended cold be considered
+to be wasted especially considering the fact that there is a significant electrical power usage if the network reaches a certain size. In the example of the Bitcoin network this escalated to
+the point that the power consumption of the entire bitcoin network is estimated to be at around 3 Gigawatts which is equivalent to the power consumption of the entire state of Morocco.\cite{url:btc_power}
+Another problem which arouse after Bitcoin started to become popular, which is also a problem with other types of consensus algorithms is the fact that with a big enough investment it is possible
+to overpower the rest of the network. Since the reward for mining is a significant amount of Bitcoins, a lot of people tried to earn money by using their PCs to mine. Soon even companies emerged
+which had bitcoin mining as their only business model. This happened especially in China, because the both the hardware and the electricity cost is very low compared to other countries. This lead
+to the fact that today and estimated 71\% of the mining power comes from a few Chinese companies with halls full of dedicated Bitcoin mining hardware. This in turn means that there is a dangerous
+possibility that one of the core concepts of blockchains, namely the decentralization is lost.\cite{url:btc_china}
+
+\subsection{Proof-of-Stake}
+
+The idea behind a Proof-of-Stake (POS) type system is that instead of determining the peer which should be able to add the next block through computing power, as in POW systems, the peer is instead
+selected by calculating some stake value first and then choosing a peer based on the highest stake in the network. There are various ways to calculate the required stake values, each with different
+criteria. The trust from other peers in the network then comes from the fact that the peer with the highest stake has the highest incentive add a block which is in consensus with the other peers.
+Otherwise, if consensus is lost, that peer loses the most since he has the highest stake. The idea was first proposed by the user QuantumMechanic in a block post.\cite{url:pos}
+
+\subsubsection{Requirements for POS systems}
+
+Some things have to be considered when trying to implement a POS type system. Firstly there should me a mechanism to ensure that a single peer is not able to create multiple blocks in a row, since
+that would give him a lot of control over the chain. Another problem which emerges when trying to implement a POS system is the resolution of so called forks in the blockchain. Forks happen
+quite frequently in blockchains, when there is no clear consensus at one point in the network. There has to be a way to resolve such forks and to regain consensus in some way. In the case of
+POW systems this is usually not a problem, since when forks happen one of the forks will have a higher number of backing peers behind it, which will lead to a higher amount of computing power.
+At some point this fork will have a higher combined difficulty compared to the other fork(s) and the peers will adopt it leading to consensus and a agreed upon chain.\cite{url:bitcoin}
+In the case of POS systems however if a fork happens and there is no single consensus, a peer has nothing to loose by trying to follow both forks, which in turn means that regaining
+consensus is impossible. Different implementations have different ways of dealing with such a consensus failure.\cite{url:pos_impossible}
+
+\subsubsection{Examples of existing POS systems}
+
+One example of a POS type systems can be found in the implementation of the cryptocurrency Nxt. In the Nxt network the creator of the next block is chosen by iterating through active peers in the
+network and choosing one randomly, assigning a higher chance to peers with a higher number of coins. So a peer which owns 5\% of the coins should approximately be able to create 5\% of the blocks
+in the chain. To ensure that a single peer is able to create multiple blocks in a row a peer is only considered as the next creator if he did not create one of the past 1440 blocks. Additionally
+a peer has to have owned his current coins for at least 1440 block before he is considered to ensure that a peer does not simply move his stake between wallets and is therefore able to create
+multiple blocks in a row. To solve the problem of consensus loss each block is assigned a difficulty which is derived from the difficulty of the previous block. Similarly to POW systems this
+difficulty is then used in a algorithm which uses hash functions to find a certain hash value. As with POW systems then in the case of forks, the fork with the higher cumulative difficulty is
+the one which should be followed. This however does not constitute a POW system since finding a valid hash value does not allow a peer to add a block to the chain.\cite{url:nxt}
+Another type of POS system was proposed during the creation of the cryptocurrency Ethereum. The so called Slasher algorithm, which was never implemented in Ethereum, proposes an algorithm in
+which a peer that tries to follow two forks in the blockchain is being punished by the network. In short what happens is that if a peer tries to add a block to both forks of the chain, then
+other peers which notice this behaviour can publish their finding to the network. The result is then that the "cheating" peer loses its reward for adding the block and the peer who found the
+"cheater" gets 33\% of the reward.\cite{url:eth_slash} This algorithm was however discarded by the Ethereum developers, since not all consensus problems could be solved and the implementation of the punishing cheater
+algorithm by itself would be non-trivial.\cite{url:eth_no_slash} Ethereum instead now uses a POW type algorithm.\cite{url:eth_pow}
+Another cryptocurrency which uses POS as a part of its consensus algorithm is Peercoin. Similarly as with Nxt in Peercoin a stake is calculated for each peer. In comparison to Nxt however the age
+of a coin i.e. the time a coin is in possession of a peer is also relevant for calculating a peers stake. The older a coin is, the higher its value. In the case of consensus failure consensus is then
+regained by choosing the fork with the higher number of collective coin age.\cite{url:peercoin} One big criticism for Peercoin however is that it uses a periodical, centralized broadcast to checkpoint blocks in the chain.
+These checkpointed blocks and all blocks in the chain before it have to be considered valid by all peers. This however causes the whole blockchain to be somewhat centralized.
+Most other implementation which use POS algorithm make use of a hybrid between POS and POW algorithms called Proof-of-Activity later described in section \ref{poa}.
+
+\subsection{Proof-of-Activity} \label{poa}
+
+Since both POW and POS type systems show some major disadvantages to each other the idea of creating a hybrid between the two concepts emerged pretty soon. The idea is to use consensus 
