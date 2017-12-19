@@ -1,76 +1,102 @@
-\section{Proof-of-Work}
+\section{Consensus in distributed blockchains}
 
 The idea behind Proof-of type systems is that whoever should be able to add the next block in the blockchain is chosen by proving the ownership of some kind of resource. This resource could be
 something determined by computer hardware, like computing power in Proof-of-Work systems or hard drive capacity in Proof-of-Space systems, or it could be determined by some kind of stake ownership
 in the system like in Proof-of-Stake systems. Below we will describe some of these systems and compare them to each other.
 
+\subsection{Byzantine Fault Tolerance}
+
+Byzantine Fault Tolerance is a kind of fault tolerance especially important in distributed systems such as Peer-to-Peer systems but also common in other types of computer systems.
+Byzantine Fault Tolerance tries to solve the so called Byzantine Generals' Problem which is defined as followed: the Byzantine army is split up in multiple divisions 
+outside an enemy city. Each division has a leading general which has to decide whether to attack the city or to retreat. The generals communicate to each other via messengers and they all try to
+reach a consensus on a plan of action. Some of the generals however may be traitors who try to prevent an agreement. They do this by sending different conflicting messages to the loyal generals. 
+Byzantine Fault Tolerance tries to make sure that a small number of such treacherous generals are not able to disrupt a consensus between the majority of the loyal generals.\cite{url:byzantine_general}
+Algorithms developed for the purpose of solving this problem in distributed systems where consensus has to be achieved are called consensus algorithms.
+
 \subsection{Proof-of-Work}
 
-The first widely used consensus algorithm in blockchains is a so called Proof-of-Work (POW) algorithm. It was and is still being used as the consensus algorithm in the implementation of Bitcoin.\cite{url:bitcoin}
-The idea behind a POW algorithm is that the creator of the next block is chosen by him providing a significant amount of computing power. Usually this computing power is provided by solving some
-kind of puzzle. 
+The most commonly used consensus algorithm in blockchains is a so called Proof-of-Work (POW) algorithm. It was and is still being used as the consensus algorithm in the implementation of Bitcoin,\cite{url:bitcoin}
+and other widely used cryptocurrencies like Litecoin and Dogecoin.
+The idea behind a POW algorithm is that the creator of the next block is chosen randomly among peers, where the chance of creating a block is proportional to the amount of computing power invested
+by the peer. Usually this computing power is provided by solving some kind of mathematical puzzle.
 
 \subsubsection{Requirements for POW systems}
 
+The puzzle in this context is some kind of computationally expensive operation, which is usually based on some cryptographic operation. After finding a solution to the puzzle it is then added to the 
+newly created
+block by the peer which solved it, in order to proove to the other peers that the correct solution has been found. Therefore it should be computationally easy for the other peers to check the correctness 
+of the solution.
 The puzzle chosen for a POW system can and should have some properties. Firstly it should be computationally hard enough to ensure that a significant amount of computational power should have 
 to be expended to be able to solve it otherwise the purpose would be lost. On the other hand however it should also be computationally easy for others in the system to check the correctness 
 of a proposed solution. Additionally it should also be possible to adjust the difficulty of the puzzle. This is very important to make the system future proof and to account for the predicted
 exponential increase in computing power over the years.\cite{url:moore_law} Additionally in the context of blockchains the difficulty of the puzzle should also account for a potential
 increase in computing power within the network caused by the addition of more peers.\par
 Lastly there is also the consideration of the usefulness of the puzzle. In most existing implementations
-of POW systems the puzzle which should be solved does not provide a higher purpose. In other words the solution of the puzzle has no value other then finding the creator of the next block
+of POW systems the puzzle which should be solved does not provide any purpose other than to prove the ownerhship of computational power. 
+In other words the solution of the puzzle has no value other then finding the creator of the next block
 and the expended computing power is could be considered to be wasted.\cite{url:pow_useless} There have been some propositions and implementations for "useful" POW type systems. One example is
 the algorithm used in the cryptocurrency Primecoin. Primecoin uses a POW type system where a byproduct of the solution for the puzzle is the discovery of potentially new prime numbers.\cite{url:primecoin}
+However this has some disadvantages, for example it is very hard to adjust the difficulty and therefore control the average time it takes to create a new block.
 
 \subsubsection{Examples for existing POW systems}
 
-The first kind of use for a POW type system was called Hashcash and was created to combat spam emails and denial of service attacks. The idea of a system like Hashcash was firstly proposed in 1992
+The first kind of use for a POW type system was called Hashcash\cite{url:hashcash} and was created to combat spam emails and denial of service attacks. The idea of a system like Hashcash was firstly proposed in 1992
 by Cynthia Dwork and Noni Naor.\cite{url:pow_email} The concrete proposal for Hascash and its first implementation followed in 1997.\cite{url:hashcash} The basic idea behind Hashcash is that
 the sender takes the header of the email he wants to send, appends a 20 bit long number at the end of it and computes the 160 bit long SHA-1 hash value of it. The goal is to find a hash in which the first 20 bits
 are set to zero. If this is not the case the appended number is increased by one and the hash is computed again. This is done until a hash with the first 20 bits set to zero is found. The email
 is then sent with the number which satisfies this condition appended to the header. The receiver of the email can then simply try to hash the header himself and he can immediately see if the resulting
 hash satisfies the conditions. This system ensures that the sender has to expend some amount of computing power by hashing the header a significant amount of times until it fulfills the condition.
-For the receiver however the check can be done immediately since he only has to compute the hash once. Ideally for the sender this means that he has to calculate for some amount of seconds until
+For the receiver however the check can be done immediately since he only has to compute the hash once. Ideally for the sender this means that he has to calculate for some amount of time until
 he can send out the email which prevents the sending of a lot of potential spam emails at once. This system also accounts for the increase of computing power over the years since the difficulty of
-the computation can be increased by increasing the required number of zero bits in the hash.\par
+the computation can be increased by increasing the required number of zero bits in the hash. However the only way to adjust the difficulty is by applying a software update, since the difficulty
+is currently statically set to 20 bits.\par
 The first use of a POW system for the purpose of a consensus algorithms in a blockchain is however the one used for bitcoins. The idea is very similar to the one used in Hashcash as both systems use a
 cryptographic hash function (SHA-256 in Bitcoin) with which they try to find a hash with a certain number of leading zeros, depending on the desired difficulty. Instead of hashing the header of a email
 however, in Bitcoin the block which should be added to the chain is hashed. Similar to the Hascash system the block contains a number which is increased until a valid hash is found.
-Additionally the new block also contains the hash of the previous block in the chain. This is necessary for once to ensure that the blocks are linked and create a chain but also to make sure that
-someone can not try to find a hash for the block after the next one or for a block 10 blocks from the current one. As with Hashcash the difficulty can be adjusted by adjusting the required number
-of leading zeros in the hash. In the Bitcoin network this difficulty adjusts itself in such a way that the average time elapsed between two blocks is approximately 10 minutes.
-In the case of Bitcoin and other cryptocurrencies this whole system of trying to find a solution and then adding a block to the chain is called mining. To provide an incentive for
+Among other things the new block also contains the hash of the previous block in the chain. This is necessary not olny to ensure that the blocks are linked and create a chain but also to make sure that
+someone can not try to find the hash for a future block in advance. As with Hashcash the difficulty can be adjusted by adjusting the required number
+of leading zeros in the hash. In the most cryptocurreny networks which use POW this difficulty adjusts itself such that the creation time of a new block is more or less constant. In the case
+of the Bitcoin network the average creation time is 10 minutes.
+This whole system of trying to find a solution and then adding a block to the chain is called mining. To provide an incentive for
 people to mine there is a reward of some amount of Bitcoins for whoever finds the next solution and adds the next block to the chain.\cite{url:bitcoin}\par
 Another type of POW algorithm used in cryptocurrencies like Litecoin or Dogecoin is the so called scrypt algorithm.\cite{url:litecoin_dogecoin} The basic concept behind scrypt is that in the first 
 step a large number of pseudorandom bit strings are generated. The amount of these bit strings is such that it could very well be possible to run into memory limitations while trying to store 
 all the strings. In a second step, these strings are then accessed in pseudorandom order and used to generate a key. Since the execution of this algorithm is not only computationally hard but
-also has a significant memory requirement it could also be categorised as a Proof-of-Space type algorithm.\cite{url:scrypt}
+also has a significant memory requirement it could also be categorised as a Proof-of-Space type algorithm.\cite{url:scrypt}\ref{proof-of-space}
 
 \subsubsection{Problems with POW systems}
 
 One of the already mentioned problems with using POW as a consensus algorithm is the already mentioned fact that with most implementations the computing power expended cold be considered
 to be wasted especially considering the fact that there is a significant electrical power usage if the network reaches a certain size. In the example of the Bitcoin network this escalated to
 the point that the power consumption of the entire bitcoin network is estimated to be at around 3 Gigawatts which is equivalent to the power consumption of the entire state of Morocco.\cite{url:btc_power}
+
 Another problem which arouse after Bitcoin started to become popular, which is also a problem with other types of consensus algorithms is the fact that with a big enough investment it is possible
-to overpower the rest of the network. Since the reward for mining is a significant amount of Bitcoins, a lot of people tried to earn money by using their PCs to mine. Soon even companies emerged
-which had bitcoin mining as their only business model. This happened especially in China, because the both the hardware and the electricity cost is very low compared to other countries. This lead
-to the fact that today and estimated 71\% of the mining power comes from a few Chinese companies with halls full of dedicated Bitcoin mining hardware. This in turn means that there is a dangerous
-possibility that one of the core concepts of blockchains, namely the decentralization is lost.\cite{url:btc_china}
+to overpower the rest of the network. Since the reward for mining is a significant amount of Bitcoins, a lot of people tried to earn money by using their PCs to mine. As more and more people joined
+the mining network, the difficulty increased and more efficient ways of mining Bitcoins emerged. For this purpose Application Specific Integrated Circuits (ASICs) started to emerge. ASICs are 
+basically small circuits made for one special purpose. In the case of Bitcoins this purpose is to calculate SHA256 hashes as fast as possible.\cite{url:asic} These ASICs where a lot cheaper and more
+energy efficient then PCs and started to make mining with them unprofitable.
+Soon even companies emerged
+which had bitcoin mining as their only business model. This happened especially in China, because both the hardware and the electricity cost is comparably very low compared to other countries. This lead
+to the fact that today an estimated 71\% of the mining power comes from a few Chinese companies with halls full of dedicated Bitcoin mining hardware. 
+This lead to so called hash power centralization and therefore the loss of
+one of the core concepts of blockchains, namely the decentralization.\cite{url:btc_china}
 
 \subsection{Proof-of-Stake}
 
 The idea behind a Proof-of-Stake (POS) type system is that instead of determining the peer which should be able to add the next block through computing power, as in POW systems, the peer is instead
 selected by calculating some stake value first and then choosing a peer based on the highest stake in the network. There are various ways to calculate the required stake values, each with different
-criteria. The trust from other peers in the network then comes from the fact that the peer with the highest stake has the highest incentive add a block which is in consensus with the other peers.
-Otherwise, if consensus is lost, that peer loses the most since he has the highest stake. The idea was first proposed by the user QuantumMechanic in a block post.\cite{url:pos}
+criteria. The trust from other peers in the network then comes from the fact that the peer with the highest stake has the highest incentive add a block which is in agreement with the other peers.
+Otherwise, if consensus is lost, then the trust in the network is lost as well and that peer loses the most since he has the highest stake. 
+The idea was first proposed by the user QuantumMechanic in a blog post.\cite{url:pos}
 
 \subsubsection{Requirements for POS systems}
 
-Some things have to be considered when trying to implement a POS type system. Firstly there should me a mechanism to ensure that a single peer is not able to create multiple blocks in a row, since
-that would give him a lot of control over the chain. Another problem which emerges when trying to implement a POS system is the resolution of so called forks in the blockchain. Forks happen
-quite frequently in blockchains, when there is no clear consensus at one point in the network. There has to be a way to resolve such forks and to regain consensus in some way. In the case of
-POW systems this is usually not a problem, since when forks happen one of the forks will have a higher number of backing peers behind it, which will lead to a higher amount of computing power.
-At some point this fork will have a higher combined difficulty compared to the other fork(s) and the peers will adopt it leading to consensus and a agreed upon chain.\cite{url:bitcoin}
+Some things have to be considered when trying to implement a POS type system. Firstly there should be a mechanism to ensure that a single peer is not able to create multiple blocks in a row, since
+that would give it control over the chain. Another problem which emerges when trying to implement a POS system is the resolution of so called forks in the blockchain. Forks happen
+quite frequently in blockchains, when there is no clear consensus at one point in the network. There has to be a way to resolve such forks and to regain consensus in some way. 
+In the case of POW systems this problem is resolved by looking at the combined difficulty of the blocks in one of the forks.
+After some amount of time one of the forks will have a higher difficulty
+then the others and the peers will then adopt the fork with the highest combined difficulty and drop all other forks.\cite{url:bitcoin}
 In the case of POS systems however if a fork happens and there is no single consensus, a peer has nothing to loose by trying to follow both forks, which in turn means that regaining
 consensus is impossible. Different implementations have different ways of dealing with such a consensus failure.\cite{url:pos_impossible}
 
@@ -78,8 +104,8 @@ consensus is impossible. Different implementations have different ways of dealin
 
 One example of a POS type systems can be found in the implementation of the cryptocurrency Nxt. In the Nxt network the creator of the next block is chosen by iterating through active peers in the
 network and choosing one randomly, assigning a higher chance to peers with a higher number of coins. So a peer which owns 5\% of the coins should approximately be able to create 5\% of the blocks
-in the chain. To ensure that a single peer is able to create multiple blocks in a row a peer is only considered as the next creator if he did not create one of the past 1440 blocks. Additionally
-a peer has to have owned his current coins for at least 1440 block before he is considered to ensure that a peer does not simply move his stake between wallets and is therefore able to create
+in the chain. To ensure that a single peer is unable to create multiple blocks in a row a peer is only considered as the next creator if he did not create one of the past 1440 blocks. Additionally
+a peer has to have owned its current coins for at least 1440 block before its stake is considered to ensure that a peer does not simply move his stake between wallets and is therefore able to create
 multiple blocks in a row. To solve the problem of consensus loss each block is assigned a difficulty which is derived from the difficulty of the previous block. Similarly to POW systems this
 difficulty is then used in a algorithm which uses hash functions to find a certain hash value. As with POW systems then in the case of forks, the fork with the higher cumulative difficulty is
 the one which should be followed. This however does not constitute a POW system since finding a valid hash value does not allow a peer to add a block to the chain.\cite{url:nxt}\par
@@ -101,6 +127,8 @@ systems to resolve consensus failures, while not having to solely rely on comput
 //TODO: expand on this section
 
 \subsection{Proof-of-Capacity or Proof-of-Space}
+
+\label{proof-of-space}
 
 A different kind of proposed consensus algorithm is the so called Proof-of-Capacity (POC), sometimes also referred to as Proof-of-Space, algorithm. The idea of POC is similar to the one used in POW, but
 instead of using computational power as proof, disk space is used. This is done in order to reach consensus in a similar way to POW while being more ecologically friendly and at the same
