@@ -5,7 +5,7 @@ The first theoretical description of such a cryptographically secured chain was 
 described the first practical implementation for a distributed blockchain in their white paper called "Bitcoin: A Peer-to-Peer Electronic Cash System".\cite{url:bitcoin} In this paper a new type of digital
 currency, later categorised as cryptocurrency, which uses a blockchains for keeping track of transactions is described in detail. One year later this concept has been implemented and released to the
 public. The idea behind Bitcoins is that they are part of a network of peers. Within this network the blockchain is public knowledge to everyone and at least the majority of the peers in the
-network should be in consensus about a newly added block.\\
+network should be in consensus about a newly added block.
 
 Byzantine Fault Tolerance is a kind of fault tolerance especially important in distributed systems such as Peer-to-Peer systems but also common in other types of computer systems.
 Byzantine Fault Tolerance tries to solve the so called Byzantine Generals' Problem. The Byzantine Generals' Problem is defined as follows: the Byzantine army is split up in multiple divisions 
@@ -13,8 +13,6 @@ outside an enemy city. Each division has a leading general which has to decide w
 reach a consensus on a plan of action. Some of the generals however may be traitors who try to prevent an agreement. They do this by sending different conflicting messages to the loyal generals. 
 Byzantine Fault Tolerance tries to make sure that a small number of such treacherous generals are not able to disrupt a consensus between the majority of the loyal generals.\cite{url:byzantine_general}
 Algorithms developed for the purpose of solving this problem in distributed systems are called consensus algorithms.
-
-\subsection{Blockchains in the example of Bitcoin}
 
 The blockchain is a core component of the way Bitcoin and other later developed cryptocurrencies work. The blockchain is used as a public ledger for all transaction which happened in the Bitcoin
 network. For this purpose every block in the chain contains among other things a collection of transactions that happened in a time period. By following the blocks in the chain it is possible to
