@@ -39,7 +39,14 @@ currently statically set to 20 bits.\par The first use of a POW system for the p
 one used in Hashcash as both systems use a cryptographic hash function (SHA-256 in Bitcoin) with which they try to find a hash with a certain number of leading zeros, depending on the desired
 difficulty. Instead of hashing the header of a email however, in Bitcoin the block which should be added to the chain is hashed. Similar to the Hascash system the block contains a number which is
 increased until a valid hash is found. Among other things the new block also contains the hash of the previous block in the chain. This is necessary not only to ensure that the blocks are linked and
-create a chain but also to make sure that someone can not try to find the hash for a future block in advance. As with Hashcash the difficulty can be adjusted by adjusting the required number of
+create a chain but also to make sure that someone can not try to find the hash for a future block in advance. 
+
+\begin{figure}[ht]
+\includegraphics[width=1\columnwidth]{fig/btc.pdf}
+\caption{Illustration of the Bitcoin mining algorithm}
+\end{figure}
+
+As with Hashcash the difficulty can be adjusted by adjusting the required number of
 leading zeros in the hash. In the most cryptocurreny networks which use POW this difficulty adjusts itself such that the creation time of a new block is more or less constant. In the case of the
 Bitcoin network the average creation time is 10 minutes. This whole system of trying to find a solution and then adding a block to the chain is called mining. To provide an incentive for people to
 mine there is a reward of some amount of Bitcoins for whoever finds the next solution and adds the next block to the chain.\cite{url:bitcoin}\par Another type of POW algorithm used in cryptocurrencies
@@ -104,6 +111,12 @@ choosing the fork with the higher number of collective coin age.\cite{url:peerco
 of the cryptocurrency to checkpoint blocks in the chain. These checkpointed blocks and all blocks in the chain before it have to be considered valid by all peers. This however causes the whole
 blockchain to be somewhat centralized. Most other implementation which use POS algorithms make use of a hybrid between POS and POW algorithms called Proof-of-Activity later described in section
 \ref{poa}.
+
+\begin{figure}[ht]
+\center
+\includegraphics[width=1\columnwidth]{fig/PoS.pdf}
+\caption{Nxts forging algorithm}
+\end{figure}
 
 \subsection{Proof-of-Activity} \label{poa}
 
